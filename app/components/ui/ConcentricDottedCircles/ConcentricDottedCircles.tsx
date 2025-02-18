@@ -4,7 +4,7 @@ const Dot: React.FC<{ size: number; x: number; y: number; color: string }> = ({ 
   <circle cx={x} cy={y} r={size / 2} fill={color} />
 );
 
-const Ring: React.FC<{
+const ConcentricDottedCircles: React.FC<{
   radius: number;
   dotsPerCircle: number;
   dotSize: number;
@@ -18,6 +18,13 @@ const Ring: React.FC<{
   repulsionScale: number;
 }> = ({ radius, dotsPerCircle, dotSize, centerX, centerY, rotationSpeed, direction, color, mouseXRef, mouseYRef, repulsionScale }) => {
   const [angleOffset, setAngleOffset] = useState(0);
+  const svgElementRef = useRef<SVGSVGElement | null>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  useEffect(() => {
+    svgElementRef.current = document.querySelector('svg');
+    rectRef.current = svgElementRef.current?.getBoundingClientRect() || null;
+  }, []);
 
   useEffect(() => {
     let frameId: number;
@@ -34,8 +41,9 @@ const Ring: React.FC<{
     let x = parseFloat((centerX + radius * Math.cos(angle)).toFixed(4));
     let y = parseFloat((centerY + radius * Math.sin(angle)).toFixed(4));
 
-    const dx = x - mouseXRef.current+centerX-100;
-    const dy = y - mouseYRef.current+80;
+    const rect = rectRef.current;
+    const dx = x - (mouseXRef.current - (rect?.left || 0));
+    const dy = y - (mouseYRef.current - (rect?.top || 0));
     const dist = Math.sqrt(dx * dx + dy * dy);
     const repulsion = Math.exp(-dist / repulsionScale);
 
@@ -61,7 +69,7 @@ const ConcentricCircles: React.FC<{
   color?: string;
   repulsionScale?: number;
   dotsPerCircle?: number;
-}> = ({ radiusIncrement = 60, dotSize = 18, width = 1000, height = 1000, speedScale = 0.06, color = "black", repulsionScale = 120, dotsPerCircle = 10 }) => {
+}> = ({ radiusIncrement = 60, dotSize = 18, width = 1000, height = 1000, speedScale = 0.06, color = "black", repulsionScale = 100, dotsPerCircle = 10 }) => {
   const centerX = width / 2;
   const centerY = height / 2;
 
@@ -78,9 +86,9 @@ const ConcentricCircles: React.FC<{
   }, []);
 
   const rings = [];
-  for (let i = 0; i < (width/radiusIncrement)/2; i++) {
+  for (let i = 0; i < ((width/radiusIncrement)/2)-1; i++) {
     rings.push(
-      <Ring
+      <ConcentricDottedCircles
         key={i}
         radius={i * radiusIncrement}
         dotsPerCircle={dotsPerCircle+i*3}

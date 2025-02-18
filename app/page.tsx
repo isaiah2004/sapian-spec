@@ -26,7 +26,7 @@ export default function Home() {
       <div className="prose w-[50%]">
         <h1 className="typingText text-left"></h1>
       </div>
-      <div className="fixed"><ConcentricCircles color="#57a773ff"/></div>
+      <div className=""><ConcentricCircles color="#57a773ff"/></div>
     </div>
   );
 }
