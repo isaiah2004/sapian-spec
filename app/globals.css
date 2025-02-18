@@ -5,11 +5,17 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --columbia-blue: #cfe8efff;
+  --bittersweet: #f05d5eff;
+  --jade: #57a773ff;
+  --eerie-black: #191919ff;
+  --violet-blue: #4357adff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #191919;
     --foreground: #ededed;
   }
 }
