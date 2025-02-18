@@ -22,7 +22,7 @@ const Ring: React.FC<{
   useEffect(() => {
     let frameId: number;
     const update = () => {
-      setAngleOffset((prev) => prev + direction * rotationSpeed);
+      setAngleOffset((prev) => prev + rotationSpeed * direction);
       frameId = requestAnimationFrame(update);
     };
     frameId = requestAnimationFrame(update);
@@ -34,13 +34,17 @@ const Ring: React.FC<{
     let x = parseFloat((centerX + radius * Math.cos(angle)).toFixed(4));
     let y = parseFloat((centerY + radius * Math.sin(angle)).toFixed(4));
 
-    const dx = x - mouseXRef.current;
-    const dy = y - mouseYRef.current;
+    const dx = x - mouseXRef.current+centerX-100;
+    const dy = y - mouseYRef.current+80;
     const dist = Math.sqrt(dx * dx + dy * dy);
     const repulsion = Math.exp(-dist / repulsionScale);
 
     x += dx * repulsion;
     y += dy * repulsion;
+
+    // Ensure x and y are valid numbers
+    if (isNaN(x)) x = 2000;
+    if (isNaN(y)) y = 2000;
 
     return <Dot key={`${radius}-${j}`} size={dotSize} x={x} y={y} color={color} />;
   });
@@ -56,7 +60,8 @@ const ConcentricCircles: React.FC<{
   speedScale?: number;
   color?: string;
   repulsionScale?: number;
-}> = ({ radiusIncrement = 60, dotSize = 18, width = 1000, height = 1000, speedScale = 0.06, color = "black", repulsionScale = 50 }) => {
+  dotsPerCircle?: number;
+}> = ({ radiusIncrement = 60, dotSize = 18, width = 1000, height = 1000, speedScale = 0.06, color = "black", repulsionScale = 120, dotsPerCircle = 10 }) => {
   const centerX = width / 2;
   const centerY = height / 2;
 
@@ -69,41 +74,27 @@ const ConcentricCircles: React.FC<{
       mouseYRef.current = event.clientY;
     };
     window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   const rings = [];
-  let i = 1;
-  while (true) {
-    const radius = i * radiusIncrement;
-    const circumference = 2 * Math.PI * radius;
-    const dotsPerCircle = Math.max(1, Math.floor(circumference / (dotSize * 2)));
-
-    if (radius + dotSize > Math.min(width, height) / 2) break;
-
-    const baseSpeed = 0.005;
-    const rotationSpeed = (Math.random() * baseSpeed + 0.02) / (radius * speedScale);
-    const direction = Math.random() > 0.5 ? 1 : -1;
-
+  for (let i = 0; i < (width/radiusIncrement)/2; i++) {
     rings.push(
       <Ring
         key={i}
-        radius={radius}
-        dotsPerCircle={dotsPerCircle}
+        radius={i * radiusIncrement}
+        dotsPerCircle={dotsPerCircle+i*3}
         dotSize={dotSize}
         centerX={centerX}
         centerY={centerY}
-        rotationSpeed={rotationSpeed}
-        direction={direction}
+        rotationSpeed={speedScale/(10*i)}
+        direction={i % 2 === 0 ? 1 : -1}
         color={color}
         mouseXRef={mouseXRef}
         mouseYRef={mouseYRef}
         repulsionScale={repulsionScale}
       />
     );
-    i++;
   }
 
   return <svg width={width} height={height} style={{ display: "block" }}>{rings}</svg>;
