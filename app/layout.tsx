@@ -27,7 +27,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="navbar bg-background">
+        <div className="navbar bg-background absolute">
           <div className="flex-1">
             <a className="btn btn-ghost text-xl">3pi4</a>
           </div>

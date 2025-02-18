@@ -8,11 +8,9 @@ export default function Home() {
     const typed = new Typed(".typingText", {
       strings: [
         "Hello World! 🚀",
-        "I am Isaiah",
-        "A Web Developer",
-        "Here's a little bit about me",
+        "I am Isaiah<br> a Web Developer <br>Here's a little bit about me",
       ],
-      typeSpeed: 70,
+      typeSpeed: 40,
       showCursor: false,
     });
 
@@ -22,11 +20,11 @@ export default function Home() {
   }, []);
 
   return (
-    <div className=" flex flex-row text-left w-screen h-screen justify-center items-center bg-background">
-      <div className="prose w-[50%]">
+    <div className=" flex flex-row text-left w-screen min-h-screen justify-center items-center bg-background">
+      <div className="prose w-[50%] mx-5">
         <h1 className="typingText text-left"></h1>
       </div>
-      <div className=""><ConcentricCircles color="#57a773ff"/></div>
+      <div className=""><ConcentricCircles width={900} height={900} color="#57a773ff"/></div>
     </div>
   );
 }
