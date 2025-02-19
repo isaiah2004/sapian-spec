@@ -24,7 +24,7 @@ export default function Home() {
       <div className="prose w-[50%] mx-5">
         <h1 className="typingText text-left"></h1>
       </div>
-      <div className=""><ConcentricCircles width={900} height={900} color="#57a773ff"/></div>
+      <div className=""><ConcentricCircles radiusIncrement={35} width={900} height={900} color="#57a773ff"/></div>
     </div>
   );
 }

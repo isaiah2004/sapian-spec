@@ -92,7 +92,7 @@ const ConcentricCircles: React.FC<{
       <ConcentricDottedCircles
         key={i}
         radius={i * radiusIncrement}
-        dotsPerCircle={dotsPerCircle+i*3}
+        dotsPerCircle={(i*radiusIncrement/15*3)+3}
         dotSize={dotSize}
         centerX={centerX}
         centerY={centerY}
