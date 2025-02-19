@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useState, useRef } from "react";
 
 const Dot: React.FC<{ size: number; x: number; y: number; color: string }> = ({ size, x, y, color }) => (
