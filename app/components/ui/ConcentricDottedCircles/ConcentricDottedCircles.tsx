@@ -73,7 +73,7 @@ const ConcentricCircles: React.FC<{
 }> = ({ radiusIncrement = 60, dotSize = 18, width = 1000, height = 1000, speedScale = 0.06, color = "black", repulsionScale = 100, dotsPerCircle = 10 }) => {
   const centerX = width / 2;
   const centerY = height / 2;
-
+  radiusIncrement = dotsPerCircle-10+radiusIncrement;
   const mouseXRef = useRef(centerX);
   const mouseYRef = useRef(centerY);
 
